@@ -1,0 +1,33 @@
+class Solution {
+  public:
+  
+    void topoDFS(vector<vector<int>>& adj,int node,vector<bool>&visited,stack<int>&st)
+    {
+        visited[node]=true;
+        
+        for(int &v:adj[node])
+        {
+            if(!visited[v])
+            topoDFS(adj,v,visited,st);
+        }
+        st.push(node);
+    }
+    vector<int> topologicalSort(vector<vector<int>>& adj) {
+        vector<bool>visited(v,false); //TOPOLOGIGAL SORT USING DFS
+        stack<int>st;
+        
+        for(int i=0;i<v;i++)
+        {
+            if(!visited[i])
+            topoDFS(adj,i,visited,st);
+        }
+        
+        vector<int>result;
+        while(!st.empty())
+        {
+            result.push_back(st.top());
+            st.pop();
+        }
+        
+        return result;
+    }
