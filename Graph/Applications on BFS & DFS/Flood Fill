@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int n=image.size();
+        int m=image[0].size();
+
+        queue<pair<int,int>>q;
+
+        int originalCol=image[sr][sc];
+        if(originalCol==color)
+        return image;
+
+        q.push({sr,sc});
+        image[sr][sc]=color;
+        
+        vector<vector<int>> directions{{-1,0},{1,0},{0,-1},{0,1}};
+
+        while(!q.empty())
+        {
+            int N=q.size();
+            while(N--)
+            {
+                int r=q.front().first;
+                int c=q.front().second;
+
+                q.pop();
+
+                for(vector<int>&dir : directions)
+                {
+                    int new_r=r+dir[0];
+                    int new_c=c+dir[1];
+
+                    if(new_r>=0 && new_r<n && new_c>=0 && new_c<m && image[new_r][new_c]==originalCol)
+                    {
+                        q.push({new_r,new_c});
+                        image[new_r][new_c]=color;
+                    }
+                }
+            }
+        }
+
+        return image;
+    }
+};
