@@ -1,0 +1,60 @@
+class Solution {
+public:
+    bool hasCycle;
+
+    void topoCycle(unordered_map<int,vector<int>>&adj,int node,vector<bool>&visited,stack<int>&st,vector<bool>&inRecursion)
+    {
+        visited[node]=true;
+        inRecursion[node]=true;
+
+        for(int &v:adj[node])
+        {
+            if(inRecursion[v]==true)
+            {
+                hasCycle=true;
+                return;
+            }        
+            if(!visited[v])
+            {
+                topoCycle(adj,v,visited,st,inRecursion);
+            }
+        }
+        st.push(node);
+        inRecursion[node]=false;
+    }
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int,vector<int>>adj;
+
+        vector<bool>visited(numCourses,false);
+        vector<bool>inRecursion(numCourses,false);
+
+        hasCycle=false;
+
+        for(auto &v: prerequisites)
+        {
+            int a=v[0];
+            int b=v[1];
+
+            adj[b].push_back(a);
+        }
+
+        stack<int>st;
+        for(int i=0;i<numCourses;i++)
+        {
+            if(!visited[i])
+            topoCycle(adj,i,visited,st,inRecursion);
+        }
+
+        if(hasCycle==true)
+        return {};
+
+        vector<int>result; 
+
+        while(!st.empty())
+        {
+            result.push_back(st.top());
+            st.pop();
+        }
+        return result;
+    }
+};
