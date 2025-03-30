@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool cycleDFS(unordered_map<int,vector<int>>&adj, int node,vector<int>&visited,vector<int>&inRecursion)
+    {
+        visited[node]=1;
+        inRecursion[node]=1;
+
+        for(int v:adj[node])
+        {
+            if(!visited[v] && cycleDFS(adj,v,visited,inRecursion))
+            return true;
+            else if(inRecursion[v])
+            return true;
+        }
+        inRecursion[node]=0;
+        return false;
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int,vector<int>>adj;
+
+        for(auto& vec:prerequisites)
+        {
+            int a=vec[0];
+            int b=vec[1];
+
+            adj[b].push_back(a);
+        }
+
+        vector<int>visited(numCourses,0);
+        vector<int>inRecursion(numCourses,0);
+
+        for(int i=0;i<numCourses;i++)
+        {
+            if(!visited[i] && cycleDFS(adj,i,visited,inRecursion))
+            return false;
+        }
+
+        return true;
+    }
+};
