@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    bool isCyclicDFS(vector<vector<int>>&adj,int node,vector<int>&visited,vector<int>&inRecursion)
+    {
+        visited[node]=1;
+        inRecursion[node]=1;
+        
+        for(int &v : adj[node])
+        {
+            if(!visited[v] && isCyclicDFS(adj,v,visited,inRecursion))
+            return true;
+            
+            else if(inRecursion[v])
+            return true;
+        }
+        inRecursion[node]=0;
+        return false;
+    }
+  
+  
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(vector<vector<int>> &adj) {
+        int v=adj.size();
+        
+        vector<int>visited(v,0);
+        vector<int>inRecursion(v,0);
+        
+        for(int i=0;i<v;i++)
+        {
+            if(!visited[i] && isCyclicDFS(adj,i,visited,inRecursion))
+            return true;
+        }
+        
+        return false;
+    }
+};
