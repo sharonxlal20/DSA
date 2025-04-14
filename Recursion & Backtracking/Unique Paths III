@@ -1,0 +1,69 @@
+class Solution {
+public:
+    int m,n;
+    int result;
+    int nonObstacle;
+
+    vector<vector<int>> directions{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    void backTrack(vector<vector<int>>& grid,int i,int j,int count)
+    {
+        if(i<0 || j<0 || i>=m || j>=n || grid[i][j] == -1) //simple backtracking condition
+            return;
+
+        if(grid[i][j] == 2) //reaching the destination
+        {
+            if(count == nonObstacle) //reaching the destination but all the 0's need to be visited
+            {
+                result++;
+            }
+            return;
+        }
+
+        grid[i][j] = -1; //mark them as visited so that they do not get visited again
+
+        for(vector<int> &dir : directions)
+        {
+            int new_i = i + dir[0];
+            int new_j = j + dir[1];
+
+            backTrack(grid,new_i,new_j,count+1);
+        }
+
+        grid[i][j] = 0; //backtrack
+
+        return;
+    }
+
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        m = grid.size();
+        n = grid[0].size();
+
+        result = 0;
+        nonObstacle = 0;
+
+        int start_x=0,start_y=0;
+
+        for(int i=0; i<m; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(grid[i][j] == 0)
+                    nonObstacle++;
+
+                if(grid[i][j] == 1)
+                {
+                    start_x = i; //the starting node in the grid
+                    start_y = j;
+                }
+            }
+        }
+        nonObstacle += 1;
+
+        int count=0;
+
+        backTrack(grid,start_x,start_y,0);
+
+        return result;
+    }
+};
