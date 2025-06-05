@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    vector<int> firstNegInt(vector<int>& arr, int k) {
+        int N = arr.size();
+        int i = 0, j = 0;
+        
+        deque<int> deq;
+        vector<int>result;
+        
+        while(j < N)
+        {
+            if(arr[j] < 0)
+            {
+                deq.push_back(arr[j]);
+            }
+            
+            if(j-i+1 == k)
+            {
+                if(!deq.empty())
+                {
+                    result.push_back(deq.front());
+                }
+                
+                else
+                {
+                    result.push_back(0);
+                }
+                
+                if(arr[i] < 0 && !deq.empty())
+                {
+                    deq.pop_front();
+                }
+                
+                i++;
+            }
+            
+            j++;
+        }
+        
+        return result;
+    }
+};
