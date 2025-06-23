@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int n = customers.size();
+
+        int maxUnsatCust = 0;
+        int currUnsatCust = 0;
+
+        for(int i=0;i<minutes;i++)
+        {
+            if(grumpy[i] == 1)
+            {
+                currUnsatCust += customers[i];
+            }
+
+            // this whole if statement can also be re-written as -> currUnsatCust += customers[i] * grumpy[i] kyunki jbh grumpy[i] = 0 
+            // hoga tbh multiply 0 hoke wahi answer milega jispe grumpy[i] = 1 pe milega :) common maths
+        }
+
+        maxUnsatCust = currUnsatCust;
+
+        int i = 0;
+        int j = minutes;
+
+        while(j < n)
+        {
+            currUnsatCust += customers[j] * grumpy[j];
+            currUnsatCust -= customers[i] * grumpy[i];
+
+            maxUnsatCust = max(maxUnsatCust,currUnsatCust);
+
+            i++;
+            j++;
+        }
+
+        int totalSat = maxUnsatCust;
+
+        for(int i=0;i<n;i++)
+        {
+            if(grumpy[i] == 0)
+            {
+                totalSat += customers[i];
+            }
+
+            // this if statement can also be written as -> totalSat += customers[i] * (1 - grumpy[i])
+            // same logic bs abh hame 0 chahiye toh hmne 1 se minus kiya hai grumpy[i] ko
+        }
+
+        return totalSat;
+    }
+};
