@@ -1,0 +1,39 @@
+class Solution {
+public:
+    typedef pair<char, int>P;
+
+    struct lambda{ //comparator for computing the order in which the priority queue has to store i.e. max heap based on frequency
+        bool operator() (P &p1, P &p2)
+        {
+            return p1.second < p2.second;
+        }
+    };
+
+    string frequencySort(string s) {
+        priority_queue<P, vector<P>, lambda>pq;
+
+        unordered_map<char,int>mp;
+
+        for(char &ch : s) // calculating the frequency of each character in the string
+        {
+            mp[ch]++;
+        }
+
+        for(auto &it : mp) //putting the freq and char from the map into the max heap
+        {
+            pq.push({it.first,it.second});
+        }
+
+        string result = "";
+
+        while(!pq.empty())
+        {
+            auto temp = pq.top();
+            pq.pop();
+
+            result += string(temp.second, temp.first);
+        }
+
+        return result;
+    }
+};
