@@ -1,0 +1,41 @@
+class Solution {
+public:
+    typedef pair<int, int>P;
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+
+        // Step 1 -> Calculate the frequency of the integers in the map
+        for(int &num : nums)
+        {
+            mp[num]++;
+        }
+
+        // Step 2 -> Store the frequency along with the value in the Priority Queue
+        priority_queue<P, vector<P>, greater<P>> pq;
+
+        for(auto &it : mp)
+        {
+            int value = it.first;
+            int freq = it.second;
+
+            pq.push({freq, value});
+
+            if(pq.size() > k) // We'll pop out those elements that we do not need in the heap i.e. those elements who arent in the top k   
+                              // frequent elements
+            {
+                pq.pop();
+            }
+        }
+
+        // Step 3 -> Store the value in the result vector
+        vector<int> result;
+
+        while(!pq.empty())
+        {
+            result.push_back(pq.top().second);
+            pq.pop();
+        }
+
+        return result;
+    }
+};
