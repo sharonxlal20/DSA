@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string removeStars(string s) {
+        stack<char>st;
+
+        for(char &ch : s)
+        {
+            if(ch != '*')
+            {
+                st.push(ch);
+            }
+            else
+            {
+                st.pop();
+            }
+        }
+
+        string answer = "";
+
+        while(!st.empty())
+        {
+            answer.push_back(st.top());
+            st.pop();
+        }
+
+        reverse(begin(answer),end(answer));
+
+        return answer;
+    }
+};
